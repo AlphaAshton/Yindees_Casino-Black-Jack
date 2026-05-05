@@ -1,0 +1,66 @@
+import random 
+print("****-Yindee's Casino | Black Jack-****")
+print("")
+print("Welcome to el Black Jack")
+
+deck = [2,3,4,5,6,7,8,9,10,10,10,10,11]
+chips = 1000
+play_again = "yes"
+
+while play_again == "yes":
+    # reset everything at start of each game
+    player_card1 = random.choice(deck)
+    player_card2 = random.choice(deck)
+    dealer_card1 = random.choice(deck)
+    dealer_card2 = random.choice(deck)
+    player_total = player_card1 + player_card2
+    dealer_total = dealer_card1 + dealer_card2
+    playing = True
+    
+    print(f"Dealer shows: {dealer_card1} and [Hidden]") 
+    print(f"Your cards: {player_card1} and {player_card2} (Total: {player_total})")
+    bet = int(input(f"You have {chips} chips. Place your bet: "))
+    
+    while playing:
+        action = input("Hit or Stand?: ").lower().strip()
+        while action not in ["hit", "stand"]:
+            print("Invalid! Type 'hit' or 'stand'")
+            action = input("Hit or Stand?: ").lower().strip()
+        if action == "hit":
+            player_total += random.choice(deck) 
+            print(f"New total: {player_total}")
+            if player_total > 21:
+                print("Bust!")
+                playing = False 
+        elif action == "stand":
+            playing = False
+            print("Stand - Dealer's turn!")
+    
+    while dealer_total < 17:
+        dealer_total += random.choice(deck)
+    
+    if player_total > 21:
+        print("You busted!")
+        chips -= bet
+    elif dealer_total > 21:
+        print("Dealer busts! You win!")
+        chips += bet
+    elif player_total > dealer_total:
+        print("You win!")
+        chips += bet
+    elif dealer_total > player_total:
+        print("Dealer wins!")
+        chips -= bet
+    else:
+        print("It's a tie!")
+
+    if chips <= 0:
+        print("You're broke! Game over!")
+        break
+    
+    print(f"Dealer total: {dealer_total}")
+    print(f"Your total: {player_total}")
+    print(f"Chips remaining: {chips}")
+    play_again = input("Play again? (yes/no): ").lower().strip()
+
+print("Thanks for playing Yindee's Casino!")
